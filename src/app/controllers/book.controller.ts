@@ -16,12 +16,9 @@ bookRouter.post("/", async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(400).json({
-      message: error?._message,
+      message: error.message,
       success: false,
-      error: {
-        name: error?.name,
-        errors: error?.errors,
-      },
+      error: error,
     });
   }
 });
