@@ -12,6 +12,10 @@ const borrowSchema = new Schema<IBorrow>(
       type: Number,
       required: [true, "Quantity is required"],
       min: [1, "Quantity cannot be negative"],
+      validate: {
+        validator: Number.isInteger,
+        message: "Quantity must be an integer",
+      },
     },
     dueDate: {
       type: Date,
