@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { Book } from "../models/book.model";
 
 export const bookRouter = express.Router();
@@ -44,39 +44,63 @@ bookRouter.get("/", async (req: Request, res: Response) => {
   });
 });
 bookRouter.get("/:bookId", async (req: Request, res: Response) => {
-  const bookId = req.params.bookId;
+  try {
+    const bookId = req.params.bookId;
 
-  const book = await Book.findById(bookId);
+    const book = await Book.findById(bookId);
 
-  res.status(200).json({
-    success: true,
-    message: "Book retrieved successfully",
-    data: book,
-  });
+    res.status(200).json({
+      success: true,
+      message: "Book retrieved successfully",
+      data: book,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message,
+      success: false,
+      error: error,
+    });
+  }
 });
 bookRouter.put("/:bookId", async (req: Request, res: Response) => {
-  const bookId = req.params.bookId;
-  const dataForUpdate = req.body;
+  try {
+    const bookId = req.params.bookId;
+    const dataForUpdate = req.body;
 
-  const book = await Book.findByIdAndUpdate(bookId, dataForUpdate, {
-    new: true,
-  });
+    const book = await Book.findByIdAndUpdate(bookId, dataForUpdate, {
+      new: true,
+    });
 
-  res.status(200).json({
-    success: true,
-    message: "Book Updated successfully",
-    data: book,
-  });
+    res.status(200).json({
+      success: true,
+      message: "Book Updated successfully",
+      data: book,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message,
+      success: false,
+      error: error,
+    });
+  }
 });
 
 bookRouter.delete("/:bookId", async (req: Request, res: Response) => {
-  const bookId = req.params.bookId;
+  try {
+    const bookId = req.params.bookId;
 
-  await Book.findByIdAndDelete(bookId);
+    await Book.findByIdAndDelete(bookId);
 
-  res.status(200).json({
-    success: true,
-    message: "Book Deleted successfully",
-    data: null,
-  });
+    res.status(200).json({
+      success: true,
+      message: "Book Deleted successfully",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message,
+      success: false,
+      error: error,
+    });
+  }
 });
