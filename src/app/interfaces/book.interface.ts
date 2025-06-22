@@ -1,4 +1,4 @@
-export interface TBook {
+export interface IBook {
   title: string;
   author: string;
   genre:
@@ -12,4 +12,7 @@ export interface TBook {
   description?: string;
   copies: number;
   available: boolean;
+}
+export interface BookMethods {
+  updateAvailable(): void;
 }

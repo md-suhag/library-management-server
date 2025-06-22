@@ -1,7 +1,7 @@
-import { model, Schema } from "mongoose";
-import { TBook } from "../interfaces/book.interface";
+import { Model, model, Schema } from "mongoose";
+import { BookMethods, IBook } from "../interfaces/book.interface";
 
-const bookSchema = new Schema<TBook>(
+const bookSchema = new Schema<IBook, Model<IBook>, BookMethods>(
   {
     title: {
       type: String,
@@ -34,7 +34,7 @@ const bookSchema = new Schema<TBook>(
     copies: {
       type: Number,
       required: [true, "Total copies of book is required"],
-      min: [1, "Copies must be a positive number"],
+      min: [0, "Copies must be a positive number"],
     },
     available: {
       type: Boolean,
@@ -47,4 +47,10 @@ const bookSchema = new Schema<TBook>(
   }
 );
 
-export const Book = model<TBook>("Book", bookSchema);
+bookSchema.method("updateAvailable", function () {
+  if (this.copies === 0) {
+    this.available = false;
+  }
+});
+
+export const Book = model("Book", bookSchema);
