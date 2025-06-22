@@ -33,6 +33,12 @@ borrowRouter.post("/", async (req: Request, res: Response) => {
           data: null,
         });
       }
+    } else {
+      res.status(404).json({
+        success: false,
+        message: "Book not found",
+        data: null,
+      });
     }
   } catch (error: any) {
     res.status(400).json({
