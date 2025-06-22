@@ -1,20 +1,20 @@
-# Libraray Mangagement Api
+# Library Mangagement Api
 
 This app provides a REST API to create, update, delete, and retrieve books, as well as to manage book borrowing.
 
-## Used Technologies:
+### Used Technologies:
 
 - Express.js
 - TypeScript
 - MongoDB (Mongoose)
 
-## Features:
+### Features:
 
 - Create new book, View single book, View all books, Update book details and Delete book.
 - Borrow book, view all borrow details with total sell of each book
 - Proper Validation
 
-## Installation & Setup:
+## # Installation & Setup :
 
 ### Clone the Repository:
 
@@ -44,7 +44,7 @@ DATABASE_URI=your_database_url
 npm run dev
 ```
 
-## API Endpoints:
+## # API Endpoints:
 
 ### 1. Create Book
 
