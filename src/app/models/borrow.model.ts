@@ -9,12 +9,12 @@ const borrowSchema = new Schema<TBorrow>({
   },
   quantity: {
     type: Number,
-    required: true,
+    required: [true, "Quantity is required"],
     min: [1, "Quantity cannot be negative"],
   },
   dueDate: {
     type: Date,
-    required: true,
+    required: [true, "Due date is required"],
   },
 });
 

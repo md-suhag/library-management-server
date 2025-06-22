@@ -1,9 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { Book } from "../models/book.model";
 
 export const bookRouter = express.Router();
 
-bookRouter.post("/", async (req, res) => {
+bookRouter.post("/", async (req: Request, res: Response) => {
   try {
     const body = req.body;
 
@@ -23,13 +23,26 @@ bookRouter.post("/", async (req, res) => {
         errors: error?.errors,
       },
     });
-    // res.status(400).json({
-    //   message: error?.message,
-    //   success: false,
-    //   error: error,
-    // });
   }
 });
-bookRouter.get("/", (req, res) => {
-  console.log("all books");
+bookRouter.get("/", async (req: Request, res: Response) => {
+  const filter =
+    typeof req.query.filter === "string" ? req.query.filter : undefined;
+  const sortBy =
+    typeof req.query.sortBy === "string" ? req.query.sortBy : "createdAt";
+  const sort = req.query.sort === "desc" ? "desc" : "asc";
+  const limit =
+    typeof req.query.limit === "string" ? parseInt(req.query.limit) : 10;
+
+  const query = filter ? { genre: filter.toUpperCase() } : {};
+
+  const books = await Book.find(query)
+    .sort({ [sortBy]: sort })
+    .limit(limit);
+
+  res.status(200).json({
+    success: true,
+    message: "Books retrieved successfully",
+    data: books,
+  });
 });

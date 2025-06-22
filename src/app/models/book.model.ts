@@ -5,15 +5,15 @@ const bookSchema = new Schema<TBook>(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "Title is required"],
     },
     author: {
       type: String,
-      required: true,
+      required: [true, "Author name is required"],
     },
     genre: {
       type: String,
-      required: true,
+      required: [true, "Genre is required"],
       enum: [
         "FICTION",
         "NON_FICTION",
@@ -25,7 +25,7 @@ const bookSchema = new Schema<TBook>(
     },
     isbn: {
       type: String,
-      required: true,
+      required: [true, "isnb number is required"],
       unique: [true, "ISBN must be unique"],
     },
     description: {
@@ -33,8 +33,8 @@ const bookSchema = new Schema<TBook>(
     },
     copies: {
       type: Number,
-      required: true,
-      min: [0, "Copies must be a positive number"],
+      required: [true, "Total copies of book is required"],
+      min: [1, "Copies must be a positive number"],
     },
     available: {
       type: Boolean,
