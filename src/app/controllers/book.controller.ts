@@ -46,3 +46,28 @@ bookRouter.get("/", async (req: Request, res: Response) => {
     data: books,
   });
 });
+bookRouter.get("/:bookId", async (req: Request, res: Response) => {
+  const bookId = req.params.bookId;
+
+  const book = await Book.findById(bookId);
+
+  res.status(200).json({
+    success: true,
+    message: "Book retrieved successfully",
+    data: book,
+  });
+});
+bookRouter.put("/:bookId", async (req: Request, res: Response) => {
+  const bookId = req.params.bookId;
+  const dataForUpdate = req.body;
+
+  const book = await Book.findByIdAndUpdate(bookId, dataForUpdate, {
+    new: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Book Updated successfully",
+    data: book,
+  });
+});
