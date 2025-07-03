@@ -50,11 +50,32 @@ const bookSchema = new Schema<IBook, Model<IBook>, BookMethods>(
     versionKey: false,
   }
 );
-
+// set available false if copies equal 0  after borrowing book
 bookSchema.method("updateAvailable", function () {
   if (this.copies === 0) {
     this.available = false;
   }
+});
+// set available false if copies equal 0 when creating a book
+bookSchema.pre("save", function (next) {
+  if (this.copies === 0) {
+    this.available = false;
+  } else {
+    this.available = true;
+  }
+  next();
+});
+// set available false if copies equal 0. set available true if copies greater than 0 when updating a book
+bookSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate();
+
+  if (update && typeof update === "object" && "copies" in update) {
+    const copies = update.copies;
+    update.available = copies > 0;
+    this.setUpdate(update);
+  }
+
+  next();
 });
 
 export const Book = model("Book", bookSchema);

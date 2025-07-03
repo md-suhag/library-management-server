@@ -1,10 +1,17 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import { bookRouter } from "./app/controllers/book.controller";
 import { borrowRouter } from "./app/controllers/borrow.controller";
+import cors from "cors";
+import config from "./config/index";
 
 const app: Application = express();
 
 app.use(express.json());
+app.use(
+  cors({
+    origin: [config.client_url as string],
+  })
+);
 
 // api endpoints
 app.use("/api/books", bookRouter);
