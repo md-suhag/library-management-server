@@ -27,20 +27,31 @@ bookRouter.get("/", async (req: Request, res: Response) => {
     typeof req.query.filter === "string" ? req.query.filter : undefined;
   const sortBy =
     typeof req.query.sortBy === "string" ? req.query.sortBy : "createdAt";
-  const sort = req.query.sort === "desc" ? "desc" : "asc";
+  const sort = req.query.sort === "asc" ? "asc" : "desc";
   const limit =
     typeof req.query.limit === "string" ? parseInt(req.query.limit) : 10;
+  const page =
+    typeof req.query.page === "string" ? parseInt(req.query.page) : 0;
 
   const query = filter ? { genre: filter.toUpperCase() } : {};
 
+  const total = await Book.countDocuments(query);
+
   const books = await Book.find(query)
     .sort({ [sortBy]: sort })
+    .skip(page * limit)
     .limit(limit);
 
   res.status(200).json({
     success: true,
     message: "Books retrieved successfully",
     data: books,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
   });
 });
 bookRouter.get("/:bookId", async (req: Request, res: Response) => {
