@@ -26,6 +26,12 @@ const bookSchema = new Schema<IBook, Model<IBook>, BookMethods>(
     isbn: {
       type: String,
       required: [true, "isnb number is required"],
+      validate: {
+        validator: function (v: string) {
+          return /^\d{10}$|^\d{13}$/.test(v);
+        },
+        message: "ISBN must be either 10 or 13 digits",
+      },
       unique: [true, "ISBN must be unique"],
     },
     description: {

@@ -29,7 +29,7 @@ borrowRouter.post("/", async (req: Request, res: Response) => {
       } else {
         res.status(400).json({
           success: false,
-          message: "No copies of book available to borrow",
+          message: "No sufficient copies of book available to borrow",
           data: null,
         });
       }
